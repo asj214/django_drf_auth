@@ -1,13 +1,11 @@
-import jwt
-from datetime import datetime, timedelta
-from django.conf import settings
+from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import (
     BaseUserManager,
     AbstractBaseUser,
     PermissionsMixin,
 )
-from django.db import models
-from django.utils import timezone
+from rest_framework.authtoken.models import Token
 from configs.models import BaseModel
 
 
@@ -64,6 +62,11 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
 
     @property
     def token(self):
+        return self.auth_token
+
+    '''
+    @property
+    def token(self):
         return self._generate_jwt_token()
 
 
@@ -76,3 +79,4 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
 
         # decode = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
         return token
+    '''

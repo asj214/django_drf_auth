@@ -13,7 +13,7 @@ Content-Type: application/json
 
 
 ###
-# @name login
+# @name authorization
 POST {{ BASE_URL }}/api/auth/login
 Content-Type: application/json
 
@@ -24,10 +24,44 @@ Content-Type: application/json
 
 
 ###
-@authorized = {{ login.response.body.token }}
+@token = {{ authorization.response.body.token }}
 
 ###
 # auth.me
 GET {{ BASE_URL }}/api/auth/me
 Content-Type: application/json
-Authorization: Bearer {{ authorized }}
+Authorization: Token {{ token }}
+
+
+### 
+# customer register
+POST {{ BASE_URL }}/api/customers/register
+Content-Type: application/json
+
+{
+    "email": "sjahn@ktown4u.com",
+    "name": "tester",
+    "password": "rewq1234"
+}
+
+
+###
+# @name login
+POST {{ BASE_URL }}/api/customers/login
+Content-Type: application/json
+
+{
+    "email": "sjahn@ktown4u.com",
+    "password": "rewq1234"
+}
+
+
+###
+@bearer = {{ login.response.body.token }}
+
+
+###
+# auth.me
+GET {{ BASE_URL }}/api/customers/me
+Content-Type: application/json
+Authorization: Bearer {{ bearer }}

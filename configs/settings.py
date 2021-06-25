@@ -28,7 +28,9 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_filters',
     'rest_framework',
-    'users'
+    'rest_framework.authtoken',
+    'users',
+    'customers'
 ]
 
 MIDDLEWARE = [
@@ -116,7 +118,8 @@ AUTH_USER_MODEL = 'users.User'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'configs.backends.CoreAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'configs.backends.JWTAuthentication',
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -130,3 +133,21 @@ REST_FRAMEWORK = {
 }
 
 JWT_EXPIRE_DAY = 60
+
+LOGGING = {
+    'version': 1,
+    # 기존의 로깅 설정을 비활성화 할 것인가?
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+        },
+    }
+}
